@@ -93,5 +93,3 @@ pnpm build
 - uma área opcional para professores acompanharem alunos.
 
 O projeto ainda está em desenvolvimento e pretendo continuar adicionando conteúdos e melhorando a experiência de estudo.
-
-Também deixei um [`guia para apresentar o projeto em entrevistas`](docs/GUIA_DE_ENTREVISTA.md).
