@@ -1,77 +1,72 @@
 # English Quest
 
-Uma plataforma de estudos de inglês que transforma nível, objetivo, tempo disponível e interesses pessoais em uma rotina diária prática.
+O English Quest é uma plataforma que criei para ajudar no estudo de inglês de uma forma mais organizada. A ideia surgiu porque eu encontrava muitos vídeos, livros e podcasts bons, mas nem sempre sabia o que estudar primeiro ou como montar uma rotina.
 
-O projeto nasceu de uma dificuldade real: existem muitos livros, vídeos, podcasts e métodos bons, mas nem sempre é fácil saber o que estudar hoje e como transformar conteúdo em aprendizado. O English Quest organiza essa decisão em uma sequência curta de input compreensível, recuperação ativa, fala e produção.
+Na plataforma, a pessoa informa o nível de inglês, o objetivo, quanto tempo tem por dia e os assuntos de que gosta. Com isso, ela recebe um plano diário com conteúdos e atividades mais próximos do seu perfil.
 
-[Abrir demonstração](https://english-quest-lucas.lsufredine.chatgpt.site/)
+**[Acessar a plataforma](https://english-quest-lucas.lsufredine.chatgpt.site/)**
 
-## O que a plataforma oferece
+## O que tem na plataforma
 
-- plano diário de 15, 30, 45 ou 60 minutos;
-- conteúdo adaptado aos níveis A1, A2, B1, B2 e C1;
-- personalização por objetivo e 18 áreas de interesse;
-- 76 indicações de vídeos, podcasts, livros, cursos e ferramentas;
-- 10 histórias graduadas com vocabulário, compreensão e áudio;
-- 136 flashcards divididos por contexto, além de cartões pessoais;
-- fila diária com revisões vencidas e limite de cartões novos;
-- quiz rápido, áudio de pronúncia e atalhos de teclado;
-- sessões guiadas para input, memória, shadowing e output;
-- progresso, sequência de estudos e meta semanal;
-- dados separados por visitante ou usuário autenticado;
-- interface responsiva para computador e celular.
+- planos de 15, 30, 45 ou 60 minutos por dia;
+- conteúdo para os níveis A1, A2, B1, B2 e C1;
+- 18 opções de interesse, como games, anime, filmes, música, tecnologia e esportes;
+- 76 indicações de vídeos, podcasts, livros, cursos e outras ferramentas;
+- 10 histórias em inglês com vocabulário, perguntas e áudio;
+- 136 flashcards prontos e opção para criar cartões próprios;
+- sistema de revisão baseado na dificuldade de cada cartão;
+- quiz, treino de pronúncia e atividades de fala;
+- histórico de estudos, sequência de dias e meta semanal;
+- progresso separado para cada pessoa;
+- layout adaptado para celular e computador.
 
-## Métodos usados
+## Métodos de estudo que usei
 
-O English Quest não depende de um único método. A rotina combina técnicas que se complementam:
+Eu não quis deixar a plataforma presa a um método só. Por isso, juntei algumas formas de estudo que funcionam bem em conjunto:
 
-1. **Comprehensible Input:** contato com material próximo do nível atual, com contexto suficiente para entender a mensagem sem traduzir cada palavra.
-2. **Active Recall:** tentativa de lembrar significados e formular frases antes de revelar a resposta.
-3. **Spaced Repetition:** cada flashcard volta de acordo com a dificuldade informada pelo estudante.
-4. **Shadowing:** repetição de trechos curtos para trabalhar ritmo, pronúncia e entonação.
-5. **Output:** o estudo termina com uma fala, resumo ou opinião criada pelo próprio estudante.
+1. **Comprehensible Input:** estudar com conteúdos que a pessoa consegue entender pelo contexto, mesmo sem conhecer todas as palavras.
+2. **Active Recall:** tentar lembrar a resposta antes de olhar, em vez de apenas reler.
+3. **Spaced Repetition:** rever os flashcards em intervalos diferentes, de acordo com a dificuldade.
+4. **Shadowing:** ouvir uma frase e repetir logo depois, tentando acompanhar o ritmo e a pronúncia.
+5. **Output:** usar o que foi estudado para falar, escrever um resumo ou dar uma opinião.
 
-O plano diário segue a ideia `INPUT + RECUPERAR + FALAR + CRIAR`. A personalização é determinística: duas pessoas com perfis diferentes recebem recomendações diferentes, e o mesmo estudante recebe um plano consistente durante o dia.
+O plano diário segue uma ordem simples: entender um conteúdo, tentar lembrar, praticar a fala e criar algo usando o inglês.
 
 ## Tecnologias
 
-- TypeScript
-- React 19 e Next.js 16 com Vinext
-- Tailwind CSS e componentes acessíveis
-- Cloudflare Workers e D1
-- Drizzle ORM
-- Web Speech API para áudio
-- Node Test Runner para testes da lógica de estudo
+- TypeScript;
+- React 19;
+- Next.js 16 com Vinext;
+- Tailwind CSS;
+- Cloudflare Workers e D1;
+- Drizzle ORM;
+- Web Speech API;
+- Node Test Runner.
 
-## Arquitetura
+## Como organizei o projeto
 
-```text
-Interface React
-   │
-   ├── Plano e recomendações ──> catálogo local por nível/interesse
-   ├── Histórias e flashcards ─> conteúdo local + Web Speech API
-   └── Progresso ──────────────> /api/state
-                                      │
-                                      ├── perfil
-                                      ├── dias de estudo
-                                      ├── agenda de revisão
-                                      └── cartões pessoais
-                                           │
-                                           └── Cloudflare D1 + Drizzle
-```
+A interface foi feita em React. Os conteúdos, histórias e flashcards ficam organizados por nível e interesse. O perfil e o progresso são enviados para uma API e salvos no banco D1.
 
-A API identifica cada visitante por um cookie seguro. Quando a autenticação está disponível, usa a identidade do usuário. Todas as consultas de dados incluem esse identificador, evitando que progresso, preferências ou cartões sejam compartilhados entre pessoas.
+Cada visitante recebe um identificador próprio. Assim, o progresso, os cartões e as preferências de uma pessoa não aparecem para outra. Se houver autenticação, a aplicação usa a identificação do usuário conectado.
 
-## Como executar localmente
+As principais partes são:
 
-Pré-requisitos: Node.js 22.13 ou superior e pnpm.
+- `app/`: páginas, interface e rotas da API;
+- `lib/`: conteúdos e regras do plano de estudo;
+- `db/`: estrutura e acesso ao banco;
+- `drizzle/`: migrações do banco;
+- `tests/`: testes da lógica de personalização e revisão.
+
+## Como rodar no computador
+
+É preciso ter Node.js 22.13 ou superior e pnpm instalados.
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-Para verificar o projeto:
+Para conferir o projeto:
 
 ```bash
 pnpm test
@@ -80,27 +75,23 @@ pnpm exec tsc --noEmit
 pnpm build
 ```
 
-O preview local usa o banco D1 simulado pelo Wrangler. As migrações estão na pasta `drizzle/`.
+## Algumas escolhas que fiz
 
-## Decisões que fizeram diferença
+- limitei a quantidade de cartões novos por dia para a revisão não ficar cansativa;
+- usei frases completas nos flashcards para não ensinar palavras soltas e sem contexto;
+- relacionei os conteúdos aos interesses escolhidos pela pessoa;
+- organizei cada sessão com começo, meio e fim;
+- salvei o progresso separadamente para cada usuário;
+- testei os principais fluxos em telas de celular e computador.
 
-- **Poucos cartões novos por dia:** evita transformar repetição espaçada em uma fila impossível de manter.
-- **Expressões em contexto:** os cartões usam frases completas em vez de listas de palavras soltas.
-- **Conteúdo ligado a interesses:** games, anime, música, ciência e outras áreas servem como porta de entrada para o idioma.
-- **Plano curto e fechado:** cada sessão tem começo, meio e fim; isso reduz a dúvida sobre o que estudar.
-- **Persistência por usuário:** a experiência continua de onde cada pessoa parou.
-- **Mobile first:** os principais fluxos podem ser concluídos com toque e sem rolagem horizontal.
+## O que ainda quero adicionar
 
-## Próximos passos
+- importação e exportação de baralhos;
+- gravação de voz para ajudar no treino de pronúncia;
+- mais testes dos fluxos completos da plataforma;
+- novas histórias e trilhas por assunto;
+- uma área opcional para professores acompanharem alunos.
 
-- permitir exportar e importar baralhos;
-- adicionar gravação de voz com comparação de pronúncia;
-- criar testes end-to-end para os fluxos de onboarding e revisão;
-- oferecer mais histórias e trilhas temáticas;
-- adicionar um painel opcional para professores.
+O projeto ainda está em desenvolvimento e pretendo continuar adicionando conteúdos e melhorando a experiência de estudo.
 
-## Sobre o desenvolvimento
-
-Este é um projeto pessoal em evolução. O produto, as regras de estudo, a seleção de conteúdo e as decisões de experiência foram refinados de forma iterativa. Ferramentas de IA foram usadas como apoio em pesquisa, prototipação e revisão de código.
-
-Um roteiro com os principais pontos para apresentar o projeto está em [`docs/GUIA_DE_ENTREVISTA.md`](docs/GUIA_DE_ENTREVISTA.md).
+Também deixei um [`guia para apresentar o projeto em entrevistas`](docs/GUIA_DE_ENTREVISTA.md).

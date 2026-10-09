@@ -1,67 +1,61 @@
-# Como apresentar o English Quest
+# Guia para apresentar o English Quest
 
-Este arquivo é um apoio para entrevista. Use as ideias como referência, mas explique com suas próprias palavras e demonstre a plataforma sempre que possível.
+Este arquivo serve como apoio para entrevistas. A ideia não é decorar tudo, mas lembrar dos pontos principais e explicar com suas próprias palavras.
 
-## Resumo em 30 segundos
+## Resumo rápido
 
-“O English Quest é uma plataforma de estudos de inglês que cria uma rotina diária com base no nível, objetivo, tempo e interesses do usuário. Eu combinei input compreensível, recuperação ativa, repetição espaçada, shadowing e produção. A aplicação também separa o progresso de cada pessoa, recomenda conteúdo por perfil e funciona em celular e computador.”
+“O English Quest é uma plataforma que eu criei para organizar o estudo de inglês. A pessoa escolhe o nível, o objetivo, o tempo disponível e os assuntos de que gosta. A partir disso, a plataforma monta um plano diário com conteúdos, flashcards, histórias e atividades de fala. Também usei repetição espaçada para organizar as revisões e deixei o progresso separado para cada usuário.”
 
-## Explicação em 2 minutos
+## Se pedirem para explicar melhor
 
-O problema que eu quis resolver foi a falta de direção. Muitas pessoas têm acesso a bons vídeos, podcasts e livros, mas gastam tempo escolhendo material ou estudam sem revisar.
+“Eu tive a ideia porque existem muitos conteúdos bons para aprender inglês, mas é fácil ficar perdido sem saber o que estudar ou revisar. Então eu quis criar um lugar que já mostrasse uma rotina pronta para o dia.
 
-Na entrada, o usuário informa nível, objetivo, tempo diário e interesses. A aplicação usa essas informações junto com a data e um identificador do visitante para montar um plano. A sessão sempre passa por quatro etapas: compreender conteúdo, recuperar o que já foi visto, praticar fala e produzir algo próprio.
+Primeiro, a pessoa informa o nível de inglês, o objetivo, o tempo que tem para estudar e os interesses. A plataforma usa essas informações para escolher os conteúdos e montar o plano. Eu organizei a sessão em quatro partes: entender um conteúdo, tentar lembrar o que foi visto, praticar a fala e criar uma frase ou resposta própria.
 
-No front-end, usei React e TypeScript. Os dados são salvos por uma rota de API e persistidos em um banco D1, com Drizzle para definir o esquema. Existem tabelas para perfil, dias estudados, agenda de flashcards e cartões criados pelo usuário.
+No front-end, usei React e TypeScript. Para salvar o perfil e o progresso, criei uma API e usei o banco D1 com Drizzle. Também fiz uma separação por usuário para que cada pessoa tenha suas próprias preferências, revisões e estatísticas.
 
-Uma decisão importante foi não mostrar todos os cartões novos de uma vez. A fila coloca primeiro as revisões vencidas e depois adiciona no máximo dez cartões ainda não vistos. Isso deixa a carga diária controlada.
+Uma escolha importante foi limitar os cartões novos. Primeiro aparecem os flashcards que já estão na hora de revisar e, depois, entram no máximo dez cartões novos. Fiz isso para a revisão não crescer demais e desanimar quem está estudando.”
 
-## Decisões técnicas que vale explicar
+## Pontos técnicos importantes
 
-### Como a personalização funciona?
+### Como a recomendação funciona?
 
-Os recursos recebem metadados de nível e interesse. A função de recomendação calcula uma pontuação maior para correspondências exatas e usa um hash estável para desempatar. Assim, o resultado varia entre perfis, mas não muda aleatoriamente a cada renderização.
+Cada conteúdo tem informações de nível e assunto. A plataforma compara esses dados com o perfil da pessoa e dá prioridade ao que combina mais. Também existe um desempate estável, então o plano não fica mudando toda vez que a página é atualizada.
 
-### Como os dados de cada pessoa ficam separados?
+### Como os dados ficam separados?
 
-A API obtém uma identidade autenticada quando disponível. Para visitantes anônimos, cria um UUID e o guarda em cookie `httpOnly`. Todas as leituras e gravações no banco usam esse identificador como filtro ou parte da chave.
+Quando a pessoa ainda não fez login, a aplicação cria um identificador e salva em um cookie seguro. Todas as consultas ao banco usam esse identificador. Quando existe um usuário conectado, a identificação da conta é usada no lugar dele.
 
-### Como funciona a repetição espaçada?
+### Como funciona a revisão dos flashcards?
 
-Depois de revelar um cartão, o usuário escolhe “De novo”, “Difícil”, “Bom” ou “Fácil”. A API transforma a avaliação em um novo intervalo e salva a próxima data de revisão. A fila diária seleciona cartões vencidos antes de liberar conteúdo novo.
+Depois de ver a resposta, a pessoa escolhe entre “De novo”, “Difícil”, “Bom” ou “Fácil”. Essa escolha define depois de quanto tempo o cartão vai aparecer outra vez. Os cartões atrasados sempre entram primeiro na fila.
 
-### Por que usar conteúdo por interesse?
+### Por que usar interesses pessoais?
 
-O objetivo não é apenas deixar a tela personalizada. Um assunto familiar oferece mais contexto para deduzir vocabulário, aumenta a chance de contato frequente e facilita a produção de frases próprias.
+Porque é mais fácil manter a rotina quando o conteúdo tem relação com algo de que a pessoa gosta. Além disso, um assunto conhecido ajuda a entender palavras novas pelo contexto.
 
-### O que você melhoraria com mais tempo?
+## Perguntas que podem fazer
 
-Eu adicionaria testes end-to-end, gravação de áudio para feedback de pronúncia, importação e exportação de baralhos e uma área para professores acompanharem alunos que autorizarem esse compartilhamento.
+**Qual foi o maior desafio?**
+“O maior desafio foi juntar vários métodos de estudo sem deixar a plataforma confusa. Para resolver isso, organizei o plano em quatro etapas curtas e ajustei o tempo de cada uma.”
 
-## Perguntas que podem aparecer
+**Por que não salvar tudo somente no navegador?**
+“Eu queria ter persistência de verdade e deixar os dados separados. Usar um banco também facilita adicionar login e sincronização entre dispositivos no futuro.”
 
-**Qual foi o maior desafio?**  
-Transformar vários métodos de estudo em um fluxo simples. A solução foi limitar o plano a quatro blocos com duração proporcional ao tempo disponível.
+**Como você evita que todo mundo receba o mesmo plano?**
+“O nível, o objetivo, o tempo e os interesses mudam a escolha dos conteúdos. Por isso, pessoas com perfis diferentes recebem planos diferentes.”
 
-**Por que não usar somente localStorage?**  
-Porque o projeto precisava demonstrar persistência real e separação de dados. O banco também facilita continuar evoluindo para autenticação e sincronização entre dispositivos.
+**Como você testou?**
+“Criei testes para a duração do plano, a personalização e a fila de revisão. Também rodei as verificações do TypeScript, o lint e o build, além de testar manualmente no celular e no computador.”
 
-**Como você evitou recomendações iguais para todo mundo?**  
-O nível e os interesses mudam a pontuação do catálogo. A data e o identificador do usuário entram no desempate estável, então perfis e dias diferentes geram planos diferentes.
-
-**Como você testou?**  
-A lógica principal tem testes automatizados para duração do plano, determinismo, personalização e fila de revisão. Também foram executados TypeScript, lint e build, além de testes manuais dos fluxos principais em tamanhos de celular e desktop.
-
-**Você usou IA?**  
-“Sim. Usei IA como ferramenta de apoio para pesquisa, prototipação e revisão. Eu defini o problema, os requisitos, os métodos de estudo, testei os fluxos e refinei as decisões do produto. Também consigo explicar a arquitetura e as regras principais do código.”
-
-Essa resposta é melhor do que esconder a ferramenta: demonstra que você sabe usar IA com critério e continua responsável pelas decisões.
+**Você usou IA?**
+“Usei como apoio durante a pesquisa, a prototipação e a revisão do código. Eu defini o problema, escolhi os requisitos, testei os fluxos e consigo explicar as principais decisões e como o projeto funciona.”
 
 ## Antes da entrevista
 
-- abra a plataforma e confirme que o link está funcionando;
-- crie um perfil de demonstração;
-- conclua uma tarefa e revise um flashcard;
-- saiba explicar as quatro tabelas do banco;
-- escolha um desafio técnico e uma melhoria futura;
-- nunca diga que implementou sozinho algo que ainda não consegue explicar.
+- abra a plataforma e veja se o link está funcionando;
+- crie um perfil para usar na demonstração;
+- mostre um plano diário e revise pelo menos um flashcard;
+- escolha uma decisão técnica para explicar com calma;
+- fale também de alguma melhoria que pretende fazer;
+- responda de forma simples e só afirme o que você consegue explicar.
